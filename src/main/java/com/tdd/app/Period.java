@@ -18,4 +18,12 @@ public class Period {
     public LocalDate getEnd() {
         return end;
     }
+
+    boolean isSameYearMonth() {
+        return getStart().equals(getEnd());
+    }
+
+    boolean isSameYear() {
+        return (start.getYear() == end.getYear());
+    }
 }
