@@ -60,10 +60,10 @@ public class BudgetService {
             if (isSameYear(start.getYear(), end.getYear())) {
                 for (int monthIndex = start.getMonthValue(); monthIndex <= end.getMonthValue(); monthIndex++) {
                     String currentYearMonth = String.format("%04d", start.getYear()) + String.format("%02d", monthIndex);
-                    if (monthIndex == start.getMonthValue()) {
+                    if (isSameMonth(monthIndex, start.getMonthValue())) {
                         int daysOfCurrentMonth = YearMonth.from(start).lengthOfMonth() - start.getDayOfMonth() + 1;
                         daysOfEachMonth.put(currentYearMonth, daysOfCurrentMonth);
-                    } else if (monthIndex == end.getMonthValue()) {
+                    } else if (isSameMonth(monthIndex, end.getMonthValue())) {
                         int daysOfCurrentMonth = end.getDayOfMonth();
                         daysOfEachMonth.put(currentYearMonth, daysOfCurrentMonth);
                     } else {
@@ -75,7 +75,7 @@ public class BudgetService {
                     if (isSameYear(yearIndex, start.getYear())) {
                         for (int monthIndex = start.getMonthValue(); monthIndex <= 12; monthIndex++) {
                             String currentYearMonth = String.format("%04d", yearIndex) + String.format("%02d", monthIndex);
-                            if (monthIndex == start.getMonthValue()) {
+                            if (isSameMonth(monthIndex, start.getMonthValue())) {
                                 int daysOfCurrentMonth = YearMonth.from(start).lengthOfMonth() - start.getDayOfMonth() + 1;
                                 daysOfEachMonth.put(currentYearMonth, daysOfCurrentMonth);
                             } else {
@@ -85,7 +85,7 @@ public class BudgetService {
                     } else if (isSameYear(yearIndex, end.getYear())) {
                         for (int monthIndex = 1; monthIndex <= end.getMonthValue(); monthIndex++) {
                             String currentYearMonth = String.format("%04d", yearIndex) + String.format("%02d", monthIndex);
-                            if (monthIndex == end.getMonthValue()) {
+                            if (isSameMonth(monthIndex, end.getMonthValue())) {
                                 int daysOfCurrentMonth = end.getDayOfMonth();
                                 daysOfEachMonth.put(currentYearMonth, daysOfCurrentMonth);
                             } else {
@@ -95,7 +95,7 @@ public class BudgetService {
                     } else {
                         for (int monthIndex = 1; monthIndex <= end.getMonthValue(); monthIndex++) {
                             String currentYearMonth = String.format("%04d", yearIndex) + String.format("%02d", monthIndex);
-                            if (monthIndex == end.getMonthValue()) {
+                            if (isSameMonth(monthIndex, end.getMonthValue())) {
                                 int daysOfCurrentMonth = end.getDayOfMonth();
                                 daysOfEachMonth.put(currentYearMonth, daysOfCurrentMonth);
                             } else {
@@ -110,6 +110,10 @@ public class BudgetService {
 
 
         return daysOfEachMonth;
+    }
+
+    private boolean isSameMonth(int month, int month2) {
+        return month == month2;
     }
 
     private boolean isSameYear(int year, int year2) {
