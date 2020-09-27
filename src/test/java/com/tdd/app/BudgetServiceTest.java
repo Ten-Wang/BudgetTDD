@@ -50,4 +50,11 @@ public class BudgetServiceTest extends TestCase {
                 LocalDate.of(2020, 4, 1));
     }
 
+    @Test
+    public void period_without_overlap_before_budget_first_day() {
+        givenBudgets(new Budget("202004", 30));
+        totalAmountShouldBe(0,
+                LocalDate.of(2020, 3, 31),
+                LocalDate.of(2020, 3, 31));
+   }
 }
