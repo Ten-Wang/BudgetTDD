@@ -54,56 +54,54 @@ public class BudgetService {
 
         if (period.isSameYearMonth()) {
             String currentYearMonth = String.format("%04d", period.getStartYear()) + String.format("%02d", period.getStartMonth());
-            daysOfEachMonth.put(currentYearMonth, period.getEnd().getDayOfMonth() - period.getStart().getDayOfMonth() + 1);
+            daysOfEachMonth.put(currentYearMonth, period.getOverlappingDays());
 
         } else {
-            if (period.isSameYear()) {
-                for (int monthIndex = period.getStartMonth(); monthIndex <= period.getEndMonth(); monthIndex++) {
-                    String currentYearMonth = String.format("%04d", period.getStartYear()) + String.format("%02d", monthIndex);
-                    if (isSameMonth(monthIndex, period.getStartMonth())) {
-                        daysOfEachMonth.put(currentYearMonth, YearMonth.from(period.getStart()).lengthOfMonth() - period.getStart().getDayOfMonth() + 1);
-                    } else if (isSameMonth(monthIndex, period.getEndMonth())) {
-                        daysOfEachMonth.put(currentYearMonth, period.getEnd().getDayOfMonth());
-                    } else {
-                        daysOfEachMonth.put(currentYearMonth, YearMonth.of(period.getStartYear(), monthIndex).lengthOfMonth());
+            for (int yearIndex = period.getStartYear(); yearIndex <= period.getEnd().getYear(); yearIndex++) {
+                if (period.isSameYear()) {
+                    for (int monthIndex = period.getStartMonth(); monthIndex <= period.getEndMonth(); monthIndex++) {
+                        String currentYearMonth = String.format("%04d", yearIndex) + String.format("%02d", monthIndex);
+                        if (isSameMonth(monthIndex, period.getStartMonth())) {
+                            daysOfEachMonth.put(currentYearMonth, YearMonth.from(period.getStart()).lengthOfMonth() - period.getStart().getDayOfMonth() + 1);
+                        } else if (isSameMonth(monthIndex, period.getEndMonth())) {
+                            daysOfEachMonth.put(currentYearMonth, period.getEnd().getDayOfMonth());
+                        } else {
+                            daysOfEachMonth.put(currentYearMonth, YearMonth.of(period.getStartYear(), monthIndex).lengthOfMonth());
+                        }
                     }
+                    break;
                 }
-
-            } else {
-                for (int yearIndex = period.getStartYear(); yearIndex <= period.getEnd().getYear(); yearIndex++) {
+                for (int monthIndex = 1; monthIndex <= 12; monthIndex++) {
+                    String currentYearMonth = String.format("%04d", yearIndex) + String.format("%02d", monthIndex);
                     if (yearIndex == period.getStartYear()) {
-                        for (int monthIndex = period.getStartMonth(); monthIndex <= 12; monthIndex++) {
-                            String currentYearMonth = String.format("%04d", yearIndex) + String.format("%02d", monthIndex);
-                            if (isSameMonth(monthIndex, period.getStartMonth())) {
-                                daysOfEachMonth.put(currentYearMonth, YearMonth.from(period.getStart()).lengthOfMonth() - period.getStart().getDayOfMonth() + 1);
-                            } else {
-                                daysOfEachMonth.put(currentYearMonth, YearMonth.of(yearIndex, monthIndex).lengthOfMonth());
-                            }
+                        if (isSameMonth(monthIndex, period.getStartMonth())) {
+                            daysOfEachMonth.put(currentYearMonth, YearMonth.from(period.getStart()).lengthOfMonth() - period.getStart().getDayOfMonth() + 1);
+                        } else {
+                            daysOfEachMonth.put(currentYearMonth, YearMonth.of(yearIndex, monthIndex).lengthOfMonth());
                         }
-                    } else if (yearIndex == period.getEnd().getYear()) {
-                        for (int monthIndex = 1; monthIndex <= period.getEndMonth(); monthIndex++) {
-                            String currentYearMonth = String.format("%04d", yearIndex) + String.format("%02d", monthIndex);
-                            if (isSameMonth(monthIndex, period.getEndMonth())) {
-                                daysOfEachMonth.put(currentYearMonth, period.getEnd().getDayOfMonth());
-                            } else {
-                                daysOfEachMonth.put(currentYearMonth, YearMonth.of(yearIndex, monthIndex).lengthOfMonth());
-                            }
-                        }
-                    } else {
-                        for (int monthIndex = 1; monthIndex <= 12; monthIndex++) {
-                            String currentYearMonth = String.format("%04d", yearIndex) + String.format("%02d", monthIndex);
-                            if (isSameMonth(monthIndex, period.getEndMonth())) {
-                                daysOfEachMonth.put(currentYearMonth, period.getEnd().getDayOfMonth());
-                            } else {
-                                daysOfEachMonth.put(currentYearMonth, YearMonth.of(yearIndex, monthIndex).lengthOfMonth());
-                            }
-                        }
-                    }
 
+                    } else if (yearIndex == period.getEnd().getYear()) {
+                        if (isSameMonth(monthIndex, period.getEndMonth())) {
+                            daysOfEachMonth.put(currentYearMonth, period.getEnd().getDayOfMonth());
+                        } else {
+                            daysOfEachMonth.put(currentYearMonth, YearMonth.of(yearIndex, monthIndex).lengthOfMonth());
+                        }
+
+                    } else {
+                        if (isSameMonth(monthIndex, period.getEndMonth())) {
+                            daysOfEachMonth.put(currentYearMonth, period.getEnd().getDayOfMonth());
+                        } else {
+                            daysOfEachMonth.put(currentYearMonth, YearMonth.of(yearIndex, monthIndex).lengthOfMonth());
+                        }
+
+                    }
                 }
+
 
             }
+
         }
+
 
         return daysOfEachMonth;
     }

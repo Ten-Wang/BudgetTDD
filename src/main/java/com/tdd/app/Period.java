@@ -27,18 +27,23 @@ public class Period {
         return (start.getYear() == end.getYear());
     }
 
-    public int getStartMonth(){
+    public int getStartMonth() {
         return getStart().getMonthValue();
     }
 
-    public int getEndMonth(){
+    public int getEndMonth() {
         return getEnd().getMonthValue();
     }
 
-    public int getStartYear(){
+    public int getStartYear() {
         return getStart().getYear();
     }
-    public int getEndYear(){
+
+    public int getEndYear() {
         return getEnd().getYear();
+    }
+
+    int getOverlappingDays() {
+        return getEnd().getDayOfMonth() - getStart().getDayOfMonth() + 1;
     }
 }

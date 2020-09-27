@@ -1,12 +1,11 @@
 package com.tdd.app;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
-import org.junit.Assert;
-import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,18 +18,13 @@ public class BudgetServiceTest extends TestCase {
     @Mock
     private List<Budget> array = new ArrayList<>();
 
-    private BudgetService budgetService = new BudgetService(new IBudgetRepo() {
-        @Override
-        public List<Budget> getAll() {
-            return array;
-        }
-    });
+    private BudgetService budgetService = new BudgetService(() -> array);
 
     @Test
     public void no_budget() {
-        LocalDate startDate = LocalDate.of(2020, 2, 10);
-        LocalDate endDate = LocalDate.of(2020, 3, 10);
-        double budget = budgetService.query(startDate, endDate);
+        double budget = budgetService.query(
+                LocalDate.of(2020, 2, 10),
+                LocalDate.of(2020, 3, 10));
         Assert.assertEquals(0, budget, 0.0);
     }
 
