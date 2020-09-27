@@ -26,4 +26,19 @@ public class Period {
     boolean isSameYear() {
         return (start.getYear() == end.getYear());
     }
+
+    public int getStartMonth(){
+        return getStart().getMonthValue();
+    }
+
+    public int getEndMonth(){
+        return getEnd().getMonthValue();
+    }
+
+    public int getStartYear(){
+        return getStart().getYear();
+    }
+    public int getEndYear(){
+        return getEnd().getYear();
+    }
 }
